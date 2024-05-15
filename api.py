@@ -113,6 +113,21 @@ def update_task(task_id):
         cursor.close()
         cnx.close()
 
+@app.route('/tasks/<int:task_id>/complete', methods=['PUT'])
+def complete_task(task_id):
+    """ Route to Mark a Task as Completed """
+    if 'user_id' not in session:
+        return jsonify({"success": False, "message": "Unauthorized"}), 401
+    cnx = db_init()
+    cursor = cnx.cursor()
+    try:
+        cursor.execute("UPDATE tasks SET completed = 1 WHERE id = %s AND user_id = %s", (task_id, session['user_id']))
+        cnx.commit()
+        return jsonify({"success": True, "message": "Task completed successfully"})
+    finally:
+        cursor.close()
+        cnx.close()
+
 @app.route('/tasks/<int:task_id>', methods=['DELETE'])
 def delete_task(task_id):
     """ Route to Delete a Task """
