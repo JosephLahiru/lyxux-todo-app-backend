@@ -3,3 +3,4 @@ flask_cors
 waitress
 mysql-connector-python
 python-dotenv
+bcrypt
