@@ -21,6 +21,7 @@ def db_init():
 
 @app.route('/register', methods=['POST'])
 def register():
+    """ Route to Register a User """
     data = request.json
     username = data['username']
     password = data['password']
@@ -39,6 +40,7 @@ def register():
 
 @app.route('/login', methods=['POST'])
 def login():
+    """ Route to Log In a User """
     data = request.json
     username = data['username']
     password = data['password']
@@ -59,11 +61,13 @@ def login():
 
 @app.route('/logout', methods=['GET'])
 def logout():
+    """ Route to Log Out a User """
     session.pop('user_id', None)
     return jsonify({"success": True, "message": "Logged out successfully"})
 
 @app.route('/tasks', methods=['POST'])
 def add_task():
+    """ Route to Add a Task """
     if 'user_id' not in session:
         return jsonify({"success": False, "message": "Unauthorized"}), 401
     data = request.json
@@ -80,6 +84,7 @@ def add_task():
 
 @app.route('/tasks', methods=['GET'])
 def get_tasks():
+    """ Route to Get All Tasks """
     if 'user_id' not in session:
         return jsonify({"success": False, "message": "Unauthorized"}), 401
     cnx = db_init()
@@ -94,6 +99,7 @@ def get_tasks():
 
 @app.route('/tasks/<int:task_id>', methods=['PUT'])
 def update_task(task_id):
+    """ Route to Update a Task """
     if 'user_id' not in session:
         return jsonify({"success": False, "message": "Unauthorized"}), 401
     data = request.json
@@ -109,6 +115,7 @@ def update_task(task_id):
 
 @app.route('/tasks/<int:task_id>', methods=['DELETE'])
 def delete_task(task_id):
+    """ Route to Delete a Task """
     if 'user_id' not in session:
         return jsonify({"success": False, "message": "Unauthorized"}), 401
     cnx = db_init()
